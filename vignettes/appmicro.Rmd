@@ -1,0 +1,70 @@
+---
+title: "Introduction to appmicro"
+
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to recon}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(appmicro)
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+```
+
+
+### Note on dependent packages
+`appmicro` relies heavily on the `data.table`, `dplyr`, and `ggplot2` packagaes. Right now, all functions involving data only have data.table methods. This choice was made because data.table methods for common functions (e.g. `merge`) offer significant speed improvements over data.frame methods.
+
+### Log messages/output
+When you run a .R script from the command line, you will want to create a .log file to keep track of warning messages and output.
+
+* `start_log_file()` opens a connection to a .log files and divert messages/outputs to it
+* `end_log_file` closes the connection to the .log file
+
+`start_log_file()` will likely be one of the first functions you call in your script, while `end_log_file()` will likely be the last.
+
+### Remove Incomplete Observations
+You will often want to, after carful consideration, remove observation for which neccessary variables are NA. `remove_na()` does this simply, just input the data.table and a character vector of the neccessary column names. 
+```{r remove_na}
+# 2013 nyc flights data
+DT <- as.data.table(nycflights13::flights)
+
+cols <- c("sched_dep_time", "arr_delay", "carrier", "origin")
+
+DT <- remove_na(DT = DT, cols = cols)
+```
+
+### Subset to analytic sample
+Oftentimes you will only use a subset of the raw data for your analysis (e.g. only females). `subset_sample()` makes subsets based on yor inclusion criteria as well as reports how many observations fit this criteria overall and at each step of subsetting. First, define "keep" criteria, which are binary variables set to 1 for observations that meet the criteria and 0 for observations that do not. Then, provide `subset_sample()` with a character vector of the sames of these binary "keep" variables.
+```{r subset_sample}
+# define keep criteria (1 for keep, 0 for drop)
+# afternoon flights
+DT[, `:=`(keep_sched_dep_time = ifelse(sched_dep_time >= 1200, 1, 0),
+          # departing from Newark
+          keep_origin = ifelse(origin == "EWR", 1, 0))]
+
+# assign subsetted data and print observations at each step
+DT_sub <- subset_sample(DT, subset_vars = c("keep_sched_dep_time",
+                                            "keep_origin"))
+```
+
+### Calculate and visualize conditional means/standard errors
+When visualzing trends in data, it is often helpful to see not only means, but also confidence intervals. `calc_cmean()` allows you to find the sample mean along with it's standard error (SE) and confidence interval (CI) at your specified alpha level. `calc_cmean()` allows for multiple independent and dependent variables. 
+
+```{r calc_cmean, fig.align = 'center'}
+DT_cmean <- calc_cmean(DT_sub, y = "dep_delay", x = "carrier", se = T)
+
+ggplot(DT_cmean) + 
+  aes(x = carrier, y = mean, ymin = lb, ymax = ub) + 
+  geom_point() + 
+  geom_errorbar()
+```
