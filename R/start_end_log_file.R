@@ -1,8 +1,8 @@
 #' Start a log file
-#' 
+#'
 #' start_log_file() is a function that opens a connection and diverts output/
 #' messages to a .log file
-#' 
+#'
 #' @param file_name path to .log file where diverted output and
 #' messages will be written
 #'
@@ -11,13 +11,12 @@ start_log_file <- function(file_name) {
   # open connection
   con <- file(file_name)
   sink(con)
-  sink(con, type="message")
-  
+  sink(con, type = "message")
+
   # print start time
   print(paste0(file_name, ".R"))
   paste("Start Time:", Sys.time())
 }
-
 
 #' End a log file
 #'
@@ -30,13 +29,11 @@ start_log_file <- function(file_name) {
 #' @export
 end_log_file <- function(log_file) {
   if (log_file == T) {
-    "--------------------------------------------------------------------------"
-    # finish time
-    paste0(file_name, ".R", " complete")
+    print("-----------------------------------------------------------------")
     paste("Finish Time:", Sys.time())
-    
+    print("Done.")
     # close connections
     sink()
-    sink(type="message")
+    sink(type = "message")
   }
 }
