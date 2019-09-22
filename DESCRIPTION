@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: person("Evan", "Flack", email = "evanjflack@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Evan Flack <evanjflack@gmail.com>
-Description: Functions for applied microeconomics researchers to streamline the research pipeline.
+Description: Functions for applied microeconomics researchers to streamline research.
 License: None
 Depends:
 	data.table (>= 1.12.0),
