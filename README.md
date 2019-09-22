@@ -1,2 +1,2 @@
 # appmicro
-Tools for applied microeconomics research
+R package for applied micro research
