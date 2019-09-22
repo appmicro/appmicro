@@ -2,4 +2,6 @@
 
 export(calc_cmean)
 export(end_log_file)
+export(remove_na)
 export(start_log_file)
+export(subset_sample)
