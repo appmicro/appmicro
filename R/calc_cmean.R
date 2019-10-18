@@ -30,15 +30,15 @@ calc_cmean <- function(DT, y, x, se = FALSE, alpha = .05) {
   }
   if (se == T) {
     ci_mult <- qnorm(1 - alpha / 2)
-    DT[, lapply(.SD, mean_se),  by = x, .SDcols = y] %>%
-      .[, measure := rep(c("mean", "se"), nrow(.) / 2)] %>%
-      melt(id.var = c(x, "measure")) %>%
-      dcast(as.formula(paste(paste(x, collapse  = " + "),
-                             "+ variable ~ measure")),
-            value.var = "value") %>%
-      .[, `:=`(lb = mean - ci_mult * se, ub = mean + ci_mult * se)]
+    DT_cmean <- DT[, lapply(.SD, mean_se),  by = x, .SDcols = y]
+    DT_cmean <- DT_cmean[, measure := rep(c("mean", "se"), nrow(DT_cmean) / 2)]
+    DT_cmean <- melt(DT_cmean, id.var = c(x, "measure"))
+    DT_cmean <- dcast(DT_cmean, as.formula(paste(paste(x, collapse  = " + "),
+                                                 "+ variable ~ measure")),
+                      value.var = "value")
+    DT_cmean[, `:=`(lb = mean - ci_mult * se, ub = mean + ci_mult * se)]
   } else {
-   DT[, lapply(.SD, mean), by = x, .SDcols = y] %>%
-      melt(id.var = x, value.name = "mean")
+   DT_cmean <- DT[, lapply(.SD, mean), by = x, .SDcols = y]
+   melt(DT_cmean, id.var = x, value.name = "mean")
   }
 }
