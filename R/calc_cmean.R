@@ -18,7 +18,7 @@
 #'                  x2 = sample(1:2, 1000, replace = T)) %>%
 #'       .[, y := 2*x1 + 4*x2 + rnorm(mean = 10, sd = 4, n = 1000)]
 #'
-#' calc_cmean(DT, y = c("y1"), x = c("x1", "x2"))
+#' calc_cmean(DT, y = c("y"), x = c("x1", "x2"))
 #'
 #' @return The data.table of conditional sample means
 #'

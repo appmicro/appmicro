@@ -14,7 +14,7 @@ of}
 
 \item{x}{a character vector of columns in DT to group by}
 
-\item{se}{logical, if TRUE output will calculate standard error and confidence 
+\item{se}{logical, if TRUE output will calculate standard error and confidence
  intervals of mean alng with  number of observations of conditional sample
 mean}
 
@@ -29,10 +29,10 @@ calc_cmean() is a function that calculates sample means (plus
  standard errors and confidence intervals) by group.
 }
 \examples{
-DT <- data.table(x1 = sample(1:5, 1000, replace = T), 
-                 x2 = sample(1:2, 1000, replace = T)) \%>\% 
+DT <- data.table(x1 = sample(1:5, 1000, replace = T),
+                 x2 = sample(1:2, 1000, replace = T)) \%>\%
       .[, y := 2*x1 + 4*x2 + rnorm(mean = 10, sd = 4, n = 1000)]
 
-calc_cmean(DT, y = c("y1"), x = c("x1", "x2"))
+calc_cmean(DT, y = c("y"), x = c("x1", "x2"))
 
 }

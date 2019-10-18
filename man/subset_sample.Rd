@@ -9,16 +9,16 @@ subset_sample(DT, subset_vars)
 \arguments{
 \item{DT}{A data.table.}
 
-\item{subset_vars}{A vector of string column names in DT. Each column should 
-be a dummy variable, with 1 (or TRUE) set as the keep condition and 0 (or 
+\item{subset_vars}{A vector of string column names in DT. Each column should
+be a dummy variable, with 1 (or TRUE) set as the keep condition and 0 (or
  FALSE) as the drop condition.}
 }
 \value{
 Subsetted DT
 }
 \description{
-subset_sample() is a function that subsets data to create a smaller analytic 
- dataset. It prints how many observations remain after each sequential 
+subset_sample() is a function that subsets data to create a smaller analytic
+ dataset. It prints how many observations remain after each sequential
  subset, as well as how many observations meet the keep criteria overall.
 }
 \examples{
@@ -27,10 +27,10 @@ DT <- as.data.table(nycflights13::flights)
 # define keep criteria (1 for keep, 0 for drop)
 # afternoon flights
 DT[, `:=`(keep_sched_dep_time = ifelse(sched_dep_time >= 1200, 1, 0),
-          # departing from Newark 
+          # departing from Newark
           keep_origin = ifelse(origin == "EWR", 1, 0))]
-# assign subsetted data and print observations at each step 
-DT_sub <- subset_sample(DT, subset_vars = c("keep_sched_dep_time", 
+# assign subsetted data and print observations at each step
+DT_sub <- subset_sample(DT, subset_vars = c("keep_sched_dep_time",
                                             "keep_origin"))
 
 }

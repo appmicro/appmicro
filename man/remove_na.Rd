@@ -11,14 +11,14 @@ remove_na(DT, cols, track = T)
 
 \item{cols}{columns to look for NA observations}
 
-\item{track}{logical, if TRUE prints the number of observations dropped 
+\item{track}{logical, if TRUE prints the number of observations dropped
 because of each variable}
 }
 \value{
 The data.table without NAs in any of the specified columns
 }
 \description{
-remove_na() is a function that removes observations that have an NA in any 
+remove_na() is a function that removes observations that have an NA in any
  specified column
 }
 \examples{
